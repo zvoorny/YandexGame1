@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Super Death Boy</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+	
+	<!-- Yandex Games SDK -->
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+	
+       <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/itog-superDeath3Yandex-2.json", {onProgress: UnityProgress});
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content" style = "position: absolute; width: 100%; height: 100%; left: 0%; top: 0%; right: 0%; transform: translate(0%, 0%)">
+      <div id="unityContainer" style = "position: absolute; width: 100%; height: 100%;"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+        <div class="title">Super Death Boy</div>
+      </div>
+    </div>
+	
+	 <script>
+   YaGames.init({
+      adv: {
+         onAdvClose: wasShown => {
+            console.info('adv closed!');
+         }
+      }
+   })
+      .then(ysdk => {
+         //ysdk.adv.showFullscreenAdv();
+         window.ysdk = ysdk;
+      });
+
+   function ShowAd() {
+      window.ysdk.adv.showFullscreenAdv({
+                    callbacks: {
+						onOpen: () => {
+						  console.log('Video ad open.');
+						},
+						onRewarded: () => {
+						  console.log('Rewarded!');
+						},
+                         onClose: () => {
+						  console.log('Video ad open.');
+						},
+						onError: function(error) {
+						  // some action on error
+						}
+                    }
+                });
+   }
+</script>
+	
+  </body>
+</html>
+
+
