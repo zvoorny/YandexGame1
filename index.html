@@ -8,13 +8,42 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/test1-yandex.json", {onProgress: UnityProgress});
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="unityContainer" style="width: 960px; height: 600px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+        <div class="title">Super Death Boy</div>
+      </div>
+    </div>
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Super Death Boy</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
 	
 	<!-- Yandex Games SDK -->
     <script src="https://yandex.ru/games/sdk/v2"></script>
 	
-       <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/itog-superDeath3Yandex-2.json", {onProgress: UnityProgress});
+      <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/test1-yandex.json", {onProgress: UnityProgress});
     </script>
+	
+	
   </head>
   <body>
     <div class="webgl-content" style = "position: absolute; width: 100%; height: 100%; left: 0%; top: 0%; right: 0%; transform: translate(0%, 0%)">
@@ -27,6 +56,7 @@
     </div>
 	
 	 <script>
+	 
    YaGames.init({
       adv: {
          onAdvClose: wasShown => {
@@ -39,17 +69,41 @@
          window.ysdk = ysdk;
       });
 
+ var myGameInstance = null;
+ 
+ var loaderUrl = "Build/UnityLoader.js"
+ var canvas = document.querySelector("#unity-canvas");
+ var config = {
+ dataUrl: "Build/test1-yandex.data.unityweb",
+ frameworkUrl: "Build/test1-yandex.wasm.framework.unityweb",
+ codeUrl: "Build/test1-yandex.wasm.code.unityweb",
+ };
+ var script = document.createElement("script");
+ script.src = loaderUrl;
+ script.onload = () => {
+ createUnityInstance(canvas,config, (progress) => {
+ progressBarFull.style.width = 100 * progress + "%";
+ }). then((unityInstance) => {
+ myGameInstance = unityInstance;
+ loadingBar.style.display = "none";
+ }).catch((message) => { 
+ alert(message);
+ });
+ };
+
    function ShowAd() {
       window.ysdk.adv.showFullscreenAdv({
                     callbacks: {
 						onOpen: () => {
 						  console.log('Video ad open.');
+						  myGameInstance.SendMessage('OutOffLevel', 'Test1');
 						},
 						onRewarded: () => {
 						  console.log('Rewarded!');
 						},
                          onClose: () => {
-						  console.log('Video ad open.');
+						  console.log('Video ad close.');
+						  myGameInstance.SendMessage('OutOffLevel', 'Test2');
 						},
 						onError: function(error) {
 						  // some action on error
@@ -57,6 +111,8 @@
                     }
                 });
    }
+   
+   
 </script>
 	
   </body>
